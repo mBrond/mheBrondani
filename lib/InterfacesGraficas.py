@@ -735,34 +735,38 @@ class InterfaceAuxiliar(Toplevel):
         Label(segundoFrame, text= "INFORMAÇÕES GERAIS DA SIMULAÇÃO", bg="#DFF9CA").grid(row=0, column=0, columnspan=4, sticky="n", padx=0, pady=5)
 
         #   Labels
-        Label(segundoFrame, text= "Número de intervalos de tempo:"           , bg="#DFF9CA").grid(row = 1, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
-        Label(segundoFrame, text= "Duração do intervalo de tempo (segundos):", bg="#DFF9CA").grid(row = 2, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 0)
-        Label(segundoFrame, text= "Número de postos de chuva:"               , bg="#DFF9CA").grid(row = 3, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
-        Label(segundoFrame, text= "Número de intervalos de tempo com chuva:" , bg="#DFF9CA").grid(row = 4, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 0)
-        Label(segundoFrame, text= "Número de operações hidrológicas:"        , bg="#DFF9CA").grid(row = 5, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
+        Label(segundoFrame, text= "Prf",                                       bg="#DFF9CA").grid(row = 1, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
+        Label(segundoFrame, text= "Número de intervalos de tempo:"           , bg="#DFF9CA").grid(row = 2, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
+        Label(segundoFrame, text= "Duração do intervalo de tempo (segundos):", bg="#DFF9CA").grid(row = 3, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 0)
+        Label(segundoFrame, text= "Número de postos de chuva:"               , bg="#DFF9CA").grid(row = 4, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
+        Label(segundoFrame, text= "Número de intervalos de tempo com chuva:" , bg="#DFF9CA").grid(row = 5, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 0)
+        Label(segundoFrame, text= "Número de operações hidrológicas:"        , bg="#DFF9CA").grid(row = 6, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
         #   Registers
+        prf = self.register
         nint_tempo       = self.register(self.validarIntSemZero)
         dt               = self.register(self.validarIntSemZero)
         nchuvas          = self.register(self.validarInt)
         nint_tempo_chuva = self.register(self.validarInt)
         ophidro          = self.register(self.validarIntSemZero)
         #   Entries
+        self.entryPrf              = Entry(segundoFrame, validate="key", width=1, validatecommand=(prf, "%P"))
         self.entryNint_tempo       = Entry(segundoFrame, validate="key", width=1, validatecommand=(nint_tempo, "%P"))
         self.entryDt               = Entry(segundoFrame, validate="key", width=1, validatecommand=(dt, "%P"))
         self.entryNchuvas          = Entry(segundoFrame, validate="key", width=1, validatecommand=(nchuvas, "%P"))
         self.entryNint_tempo_chuva = Entry(segundoFrame, validate="key", width=1, validatecommand=(nint_tempo_chuva, "%P"))
         self.entryOphidro          = Entry(segundoFrame, validate="key", width=1, validatecommand=(ophidro, "%P"))
         #   Grids
-        self.entryNint_tempo      .grid(row = 1, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 2, ipadx=35)
-        self.entryDt              .grid(row = 2, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 0, ipadx=35)
-        self.entryNchuvas         .grid(row = 3, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 2, ipadx=35)
-        self.entryNint_tempo_chuva.grid(row = 4, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 0, ipadx=35)
-        self.entryOphidro         .grid(row = 5, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 2, ipadx=35)
+        self.entryPrf             .grid(row = 1, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 2, ipadx=35)
+        self.entryNint_tempo      .grid(row = 2, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 2, ipadx=35)
+        self.entryDt              .grid(row = 3, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 0, ipadx=35)
+        self.entryNchuvas         .grid(row = 4, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 2, ipadx=35)
+        self.entryNint_tempo_chuva.grid(row = 5, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 0, ipadx=35)
+        self.entryOphidro         .grid(row = 6, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 2, ipadx=35)
 
         #   botao proximo
-        Button(segundoFrame, text = "Próximo", width = 10, command=lambda: self.manipularInformacaoGeral()).grid(row = 6, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 5 )
+        Button(segundoFrame, text = "Próximo", width = 10, command=lambda: self.manipularInformacaoGeral()).grid(row = 7, column = 2, columnspan = 2, sticky = "w", padx = 5, pady = 5 )
         #   botao voltar
-        Button(segundoFrame, text = "Voltar", width = 10, command=lambda: self.fecharJanelaSecundaria(0)).grid(row = 6, column = 0, columnspan = 2, sticky = "w", padx = 5, pady = 5 )
+        Button(segundoFrame, text = "Voltar", width = 10, command=lambda: self.fecharJanelaSecundaria(0)).grid(row = 7, column = 0, columnspan = 2, sticky = "w", padx = 5, pady = 5 )
         
         self.entryNint_tempo.focus()
         

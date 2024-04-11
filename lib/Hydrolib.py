@@ -276,7 +276,7 @@ def calcular_TC_Kirpich(diferenca_cota_m, comprimento_canal_km):
     #   Tempo de concentracao em HORAS
     return ((57 * ((comprimento_canal_km**3)/diferenca_cota_m)**0.385) / 60.0)
 #------------------------------------------------------------------------
-def calcular_HUT_SCS(tempo_concentracao_horas, area_km2, duracao_intervalo_tempo_s):
+def calcular_HUT_SCS(tempo_concentracao_horas, area_km2, duracao_intervalo_tempo_s, prf):
     """
     Retorna valores (Tempo de subida [horas], Vazao de pico [horas] e Tempo de base [horas]) do hidrograma unitario sintetico.
     
@@ -292,7 +292,7 @@ def calcular_HUT_SCS(tempo_concentracao_horas, area_km2, duracao_intervalo_tempo
     
     Tempo_pico = 0.6 * tempo_concentracao_horas #TC em HORAS!
     tempo_subida_h = Tempo_pico + duracao_intervalo_tempo_s/7200.0 #O dito "Tp" da maioria dos livros. Tempo total de subida, desde origem.
-    vazao_pico_hut_m3s = 0.208 * area_km2 / tempo_subida_h  #Vazao de pico em metros cubicos por segundo
+    vazao_pico_hut_m3s = prf * area_km2 / tempo_subida_h  #Vazao de pico em metros cubicos por segundo
     tempo_base_h = 2.67 * tempo_subida_h
 
     return tempo_subida_h, vazao_pico_hut_m3s, tempo_base_h
@@ -301,7 +301,7 @@ def aplicar_Convolucao(tempo_base_h, vazao_pico_hut_m3s, tempo_subida_h, duracao
     """
     Calcula o hidrograma de projeto a partir de uma serie de dados de chuva efetiva.
     
-    O hidrograma e' retornado em uma variavel do tipo array de floats [em m³/s].
+    O hidrograma e' retornado em uma variavel do tipo array de floats [em mï¿½/s].
         hidrograma = [...]
     
     Parametros para uso:
@@ -519,13 +519,13 @@ def aplicar_Puls(curva_cota_volume, hidrograma_entrada, by_pass, curva_cota_vaza
     Calcula o hidrograma de saida de um reservatorio a partir de uma simulacao de Puls. 
     
     A funcao retorna dois arrays de floats:
-        hidrograma_saida = [...]: Valores do hidrograma de saida do reservatorio [m³/s].
+        hidrograma_saida = [...]: Valores do hidrograma de saida do reservatorio [mï¿½/s].
         cota_reservatorio = [...]: Valores de cota do reservatorio [m].
     
     Parametros para uso:
         -> curva_cota_volume: Lista que contem a informacao da curva cota-volume do reservatorio.
             Exemplo: curva_cota_volume = [[...], [...]] -> Em que o primeiro bloco [...] contem somente dados de cota [em metros], 
-            e o segundo bloco [...] contem somente dados de volume [10^3 metros³]. Ambas DEVEM estar em ordem CRESCENTE.
+            e o segundo bloco [...] contem somente dados de volume [10^3 metrosï¿½]. Ambas DEVEM estar em ordem CRESCENTE.
             OBS: O primeiro par ordenado deve ser cota 0 e volume 0.
         -> hidrograma_entrada: List/array que contem os dados do hidrograma de entrada do reservatorio.
             Exemplo: hidrograma_entrada = [...] -> Dados de entrada de vazao [em metros^3/s].
@@ -533,7 +533,7 @@ def aplicar_Puls(curva_cota_volume, hidrograma_entrada, by_pass, curva_cota_vaza
             caso by_pass for igual a zero, significa que nao ha' a presenca de by-pass no reservatorio (reservatorio on-line).
         -> curva_cota_vazao: Lista que contem a informacao da curva cota-vazao de extravasao do reservatorio.
             Exemplo: curva_cota_vazao = [[...], [...]] -> Em que o primeiro bloco [...] contem somente dados de cota [em metros], 
-            e o segundo bloco [...] contem somente dados de vazao [metros³/s]. Ambas DEVEM estar em ordem CRESCENTE.
+            e o segundo bloco [...] contem somente dados de vazao [metrosï¿½/s]. Ambas DEVEM estar em ordem CRESCENTE.
         -> cota_inicial_m: Float que representa a cota inicial do reservatorio.
         -> numero_intervalos_tempo: Int que representa o numero de intervalos de tempo da operacao.
         -> duracao_intervalo_tempo_s: Int que representa a duracao do intervalo de tempo [segundos].
@@ -717,10 +717,10 @@ def aplicar_MuskingumCunge(hidrograma_entrada, numero_intervalos_tempo, duracao_
     Calcula o hidrograma de saida de um canal retangular largo a partir de uma simulacao de Muskingum-Cunge.
     
     A funcao retorna dois arrays de floats:
-        hidrogramas_trechos = [...]: Valores do hidrograma de saida do canal [m³/s].
+        hidrogramas_trechos = [...]: Valores do hidrograma de saida do canal [mï¿½/s].
     
     Parametros para uso:
-        -> hidrograma_entrada = List/array que representa o hidrograma de entrada no canal [m³/s].
+        -> hidrograma_entrada = List/array que representa o hidrograma de entrada no canal [mï¿½/s].
         -> numero_intervalos_tempo = Int que representa o numero de intervalos de tempo da simulacao.
         -> duracao_intervalo_tempo_s = Int que representa a duracao do intervalo de tempo [segundos].
         -> diferenca_cota_m = Float que representa a diferenca de cota total do canal [metros]
@@ -1045,7 +1045,7 @@ def plotar_Hidrogramas_PQ(hidrograma, precipitacao_projeto, precipitacao_efetiva
     eixo_x = array([ii for ii in range(len(precipitacao_projeto))], float64)
     
     #   Plotagem 
-    ax2.bar(eixo_x, precipitacao_projeto, width = 1, color='#00FFFF', linewidth = 0, label = "Precipitação")
+    ax2.bar(eixo_x, precipitacao_projeto, width = 1, color='#00FFFF', linewidth = 0, label = "Precipitaï¿½ï¿½o")
     ax2.bar(eixo_x, precipitacao_efetiva , width = 1, color='#147E7E', linewidth = 0, label = "Precip. Efetiva")
     
     #   Ajustar valores do segundo eixo Y

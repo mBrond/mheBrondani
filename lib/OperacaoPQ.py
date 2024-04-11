@@ -72,12 +72,12 @@ def calcularChuvasOrdenadas(numero_intervalos_tempo_chuva, duracao_intervalo_tem
     #   Retorne
     return precipitacao_sintetica
 #----------------------------------------------------------------------------------
-def calcularOperacaoPQ(numero_intervalos_tempo, duracao_intervalo_tempo, numero_intervalos_tempo_chuva, coeficiente_cn, area_km2, tc_horas, precipitacao_ordenada):
+def calcularOperacaoPQ(numero_intervalos_tempo, duracao_intervalo_tempo, numero_intervalos_tempo_chuva, coeficiente_cn, area_km2, tc_horas, precipitacao_ordenada, prf=0.208):
     """Funcao para calcular as variaveis de saida de hidrograma"""
     #   Calcular a Precipitacao Efetiva
     precipitacao_efetiva = calcular_PrecipitacaoEfetiva_CN(coeficiente_cn, precipitacao_ordenada, numero_intervalos_tempo_chuva)
     #   Calcular HUT da operacao
-    tempo_subida, vazao_pico_hut, tempo_base = calcular_HUT_SCS(tc_horas, area_km2, duracao_intervalo_tempo) #Caracteristicas do HUT para convolucao
+    tempo_subida, vazao_pico_hut, tempo_base = calcular_HUT_SCS(tc_horas, area_km2, duracao_intervalo_tempo, prf) #Caracteristicas do HUT para convolucao
     #   Calular Hidrograma da operacao
     hidrograma_resultante = aplicar_Convolucao(tempo_base, vazao_pico_hut, tempo_subida, duracao_intervalo_tempo, numero_intervalos_tempo, numero_intervalos_tempo_chuva, precipitacao_efetiva) #Convolucao para HUT
     #   Retorne
