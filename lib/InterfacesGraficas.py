@@ -346,6 +346,27 @@ class InterfaceAuxiliar(Toplevel):
         except ValueError:
             return False
     #-----------------------------------------------------------------------
+    def validarFloatSemZero(self, novo_texto):
+        """"""
+        if not novo_texto:
+            return True
+        try:
+            if len(novo_texto) < 9: # Pode digitar somente 8 caracteres
+                if float(novo_texto) > 100:
+                    raise ValueError
+                elif "-" in novo_texto:
+                    raise ValueError
+                elif " " in novo_texto:
+                    raise ValueError
+                elif float(novo_texto) == 0:
+                    raise ValueError
+                else:
+                    return True
+            else:
+                raise ValueError
+        except ValueError:
+            return False
+    # -----------------------------------------------------------------------
     def validarInt(self, novo_texto):
         """"""
         if not novo_texto:
@@ -683,8 +704,8 @@ class InterfaceAuxiliar(Toplevel):
             ERROS += auxERROS
             focus = 0
         if self.entryPrf.get() == "":
-            auxERRPS = ERROS
-            ERROS = "Informe o valor de pico.\n\n"
+            auxERROS = ERROS
+            ERROS = "Informe o fator de pico.\n\n"
             ERROS += auxERROS
             focus += 0
             
@@ -755,7 +776,7 @@ class InterfaceAuxiliar(Toplevel):
         Label(segundoFrame, text= "Número de intervalos de tempo com chuva:" , bg="#DFF9CA").grid(row = 5, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 0)
         Label(segundoFrame, text= "Número de operações hidrológicas:"        , bg="#DFF9CA").grid(row = 6, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
         #   Registers
-        prf              = self.register(self.validarFloat)
+        prf              = self.register(self.validarFloatSemZero)
         nint_tempo       = self.register(self.validarIntSemZero)
         dt               = self.register(self.validarIntSemZero)
         nchuvas          = self.register(self.validarInt)
