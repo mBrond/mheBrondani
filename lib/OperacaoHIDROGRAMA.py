@@ -5,8 +5,8 @@
 from os import path
 from numpy import array, float64, argmax
 #   Import das bibliotecas customizadas
-from Leitura import lerSerieObservada
-from Hydrolib import plotar_Hidrogramas_Leitura
+from lib.Leitura import lerSerieObservada
+from lib.Hydrolib import plotar_Hidrogramas_Leitura
 
 
 #----------------------------------------------------------------------

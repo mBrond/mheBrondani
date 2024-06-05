@@ -5,9 +5,9 @@
 from os import path
 from numpy import array, float64
 #   Import das bibliotecas customizadas
-from Hydrolib import aplicar_MuskingumCunge
-from Hydrolib import plotar_Hidrogramas_MKC
-from Leitura import lerSerieObservada
+from lib.Hydrolib import aplicar_MuskingumCunge
+from lib.Hydrolib import plotar_Hidrogramas_MKC
+from lib.Leitura import lerSerieObservada
 
 
 #----------------------------------------------------------------------

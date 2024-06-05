@@ -12,12 +12,12 @@ from tkinter import scrolledtext
 from os import path
 from PIL import Image, ImageTk
 #   Import das bibliotecas customizadas
-from Utilidades import centralizarJanela, criarPasta, deletarArquivoAntigo
-from Utilidades import escreverArquivoEntrada, mensagensInterfaces
-from Utilidades import mensagensIntegridadeArquivosObservados
-from CalculoOperacoes import iniciarProcessamento, iniciarGraficos
-from Leitura import procurarArquivo, checarIntegridadeArquivoTexto
-from Leitura import checarIntegridadeArquivoCotaVolume, determinarDiretoriosPlotagens
+from lib.Utilidades import centralizarJanela, criarPasta, deletarArquivoAntigo
+from lib.Utilidades import escreverArquivoEntrada, mensagensInterfaces
+from lib.Utilidades import mensagensIntegridadeArquivosObservados
+from lib.CalculoOperacoes import iniciarProcessamento, iniciarGraficos
+from lib.Leitura import procurarArquivo, checarIntegridadeArquivoTexto
+from lib.Leitura import checarIntegridadeArquivoCotaVolume, determinarDiretoriosPlotagens
 
 
 #-----------------------------------------------------------------------
@@ -35,9 +35,11 @@ class InterfacePrincipal(Toplevel):
         self.diretorio_do_software = diretorio_do_software
         
         #   Mudar todos os icones
-        icone = ImageTk.PhotoImage(Image.open(self.diretorio_do_software + "/lib/icone.png".encode()))
-        self.master.wm_iconphoto(True, icone)
-        
+        try: #adicionado try para o arquivo executavél funcionar
+            icone = ImageTk.PhotoImage(Image.open(".\\lib\\icone.png".encode()))
+            self.master.wm_iconphoto(True, icone)
+        except:
+            pass
         #   Rodar interface
         self.interfacePrincipal()
     #-----------------------------------------------------------------------
@@ -82,11 +84,14 @@ class InterfacePrincipal(Toplevel):
         cabecalho.grid(row = 0, column = 0, columnspan = 4, pady = 10, padx = 0, ipady = 10, ipadx = 5)
     
         #    Bi de ibaaaagens cobandante habilton!
-        imagemLogo = ImageTk.PhotoImage(Image.open(self.diretorio_do_software + "/lib/Logo.png".encode()))
-        imagemLabel = Label(primeiroFrame, image=imagemLogo, bg="#DFF9CA")
-        imagemLabel.grid(row = 1, column = 0, columnspan = 4, pady = 0, padx = 0)
-        imagemLabel.image = imagemLogo
-        
+        try: #adicionado try para o arquivo executavél funcionar
+            imagemLogo = ImageTk.PhotoImage(Image.open(".\\lib\\Logo.png".encode()))
+            imagemLabel = Label(primeiroFrame, image=imagemLogo, bg="#DFF9CA")
+            imagemLabel.grid(row = 1, column = 0, columnspan = 4, pady = 0, padx = 0)
+            imagemLabel.image = imagemLogo
+        except:
+            pass
+
         #   Centralizar o programa na tela
         centralizarJanela(self)
     #-----------------------------------------------------------------------
@@ -156,9 +161,12 @@ class InterfaceAuxiliar(Toplevel):
         self.diretorio_do_software = diretorio_do_software
         
         #   Mudar todos os icones
-        icone = ImageTk.PhotoImage(Image.open(self.diretorio_do_software + "/lib/icone.png".encode()))
-        self.master.wm_iconphoto(True, icone)
-        
+        try: #adicionado try para o arquivo executavél funcionar
+            icone = ImageTk.PhotoImage(Image.open(self.diretorio_do_software + "//lib//icone.png".encode()))
+            self.master.wm_iconphoto(True, icone)
+        except:
+            pass
+
         #   Rodar interface
         self.janelaInterfaceAuxiliar()
     #-----------------------------------------------------------------------
@@ -674,6 +682,11 @@ class InterfaceAuxiliar(Toplevel):
             ERROS = "Informe o número de intervalos de tempo.\n\n"
             ERROS += auxERROS
             focus = 0
+        if self.entryPrf.get() == "":
+            auxERRPS = ERROS
+            ERROS = "Informe o valor de pico.\n\n"
+            ERROS += auxERROS
+            focus += 0
             
         #   checar se foram encontrados erros:
         if not (ERROS == ""):
@@ -696,7 +709,7 @@ class InterfaceAuxiliar(Toplevel):
         #   Sem erros aparentes...Continue o PROGRAMA 
         else: 
             #   But here's my NUMBER ONEE! (HEY!!!)
-            self.strings_entrada.append("INICIO; "+ self.entryNint_tempo.get() + "; " + self.entryDt.get() + "; " + self.entryNchuvas.get() + "; " + self.entryNint_tempo_chuva.get() + "; " + self.entryOphidro.get() + ";\n")
+            self.strings_entrada.append("INICIO; "+ self.entryNint_tempo.get() + "; " + self.entryDt.get() + "; " + self.entryNchuvas.get() + "; " + self.entryNint_tempo_chuva.get() + "; " + self.entryOphidro.get() + ";" + self.entryPrf.get() +";\n")
             
             #   Atualizar a variavel de numero maximo de operacoes
             self.n_max_op = int(self.entryOphidro.get())
@@ -735,14 +748,14 @@ class InterfaceAuxiliar(Toplevel):
         Label(segundoFrame, text= "INFORMAÇÕES GERAIS DA SIMULAÇÃO", bg="#DFF9CA").grid(row=0, column=0, columnspan=4, sticky="n", padx=0, pady=5)
 
         #   Labels
-        Label(segundoFrame, text= "Prf",                                       bg="#DFF9CA").grid(row = 1, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
+        Label(segundoFrame, text= "Fator de pico (Unidades Inglesas)",         bg="#DFF9CA").grid(row = 1, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
         Label(segundoFrame, text= "Número de intervalos de tempo:"           , bg="#DFF9CA").grid(row = 2, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
         Label(segundoFrame, text= "Duração do intervalo de tempo (segundos):", bg="#DFF9CA").grid(row = 3, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 0)
         Label(segundoFrame, text= "Número de postos de chuva:"               , bg="#DFF9CA").grid(row = 4, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
         Label(segundoFrame, text= "Número de intervalos de tempo com chuva:" , bg="#DFF9CA").grid(row = 5, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 0)
         Label(segundoFrame, text= "Número de operações hidrológicas:"        , bg="#DFF9CA").grid(row = 6, column = 0, columnspan = 2, sticky = "e", padx = 0, pady = 2)
         #   Registers
-        prf = self.register
+        prf              = self.register(self.validarFloat)
         nint_tempo       = self.register(self.validarIntSemZero)
         dt               = self.register(self.validarIntSemZero)
         nchuvas          = self.register(self.validarInt)
@@ -2169,9 +2182,12 @@ class InterfacePlotagens(Toplevel):
         self.diretorio_do_software = diretorio_do_software
         
         #   Mudar todos os icones
-        icone = ImageTk.PhotoImage(Image.open(self.diretorio_do_software + "/lib/icone.png".encode()))
-        self.master.wm_iconphoto(True, icone)
-        
+        try: #adicionado try para o arquivo executavél funcionar
+            icone = ImageTk.PhotoImage(Image.open(".\\lib\\icone.png".encode()))
+            self.master.wm_iconphoto(True, icone)
+        except:
+            pass
+
         #   Rodar interface
         self.janelaInterfacePlotagens()
     #-----------------------------------------------------------------------
@@ -2295,9 +2311,12 @@ class InterfaceSobre(Toplevel):
         self.diretorio_do_software = diretorio_do_software
         
         #   Mudar todos os icones
-        icone = ImageTk.PhotoImage(Image.open(self.diretorio_do_software + "/lib/icone.png".encode()))
-        self.master.wm_iconphoto(True, icone)
-        
+        try: #adicionado try para o arquivo executavél funcionar
+            icone = ImageTk.PhotoImage(Image.open(".\\lib\\icone.png".encode()))
+            self.master.wm_iconphoto(True, icone)
+        except:
+            pass
+
         #   Rodar interface
         self.janelaInterfaceInformacoes()
     #-----------------------------------------------------------------------

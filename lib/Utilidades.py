@@ -239,6 +239,7 @@ def mensagensIntegridadeInfoGerais(n_mensagem, linhas_lidas):
     elif n_mensagem == 9: messagebox.showerror("Erro na linha: %d" %(linhas_lidas),"A duração do intervalo de tempo da simulação não pode ser zero.")
     elif n_mensagem == 10: messagebox.showerror("Erro na linha: %d" %(linhas_lidas),"O número de intervalos de tempo das chuvas não pode ser zero.")
     elif n_mensagem == 11: messagebox.showerror("Erro na linha: %d" %(linhas_lidas),"O número de operações hidrológicas da simulação não pode ser zero.")
+    elif n_mensagem == 12: messagebox.showerror("Erro na linha: %d" %(linhas_lidas), "O valor de PRF não pode ser zero.")
 #-----------------------------------------------------------------------
 def mensagensIntegridadeChuvas(n_mensagem, linhas_lidas, nch, detalhes):
     """Tem as mensagens de erros do arquivo Leitura na parte de entrada de informacoes de chuva"""

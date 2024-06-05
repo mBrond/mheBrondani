@@ -5,8 +5,8 @@
 from os import path
 from numpy import array, float64
 #   Import das bibliotecas customizadas
-from Hydrolib import somar_Hidrogramas
-from Hydrolib import plotar_somar_Hidrogramas
+from lib.Hydrolib import somar_Hidrogramas
+from lib.Hydrolib import plotar_somar_Hidrogramas
 
 
 #----------------------------------------------------------------------

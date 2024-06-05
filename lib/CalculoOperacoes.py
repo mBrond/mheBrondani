@@ -37,16 +37,16 @@
 
 
 #   Import das bibliotecas customizadas
-from OperacaoPQ import gerarVariaveisSaidaPQ, calcularOperacaoPQ, escreverSaidaPQ, plotarPQ
-from OperacaoPULS import gerarVariaveisSaidaPULS, preparacaoPULS, calcularOperacaoPULS, escreverSaidaPULS, plotarPULS
-from OperacaoMKC import gerarVariaveisSaidaMKC, preparacaoMKC, calcularOperacaoMKC, escreverSaidaMKC, plotarMKC
-from OperacaoJUNCAO import gerarVariaveisSaidaJUNCAO, preparacaoJUNCAO, calcularOperacaoJUNCAO, escreverSaidaJUNCAO, plotarJUN
-from OperacaoHIDROGRAMA import gerarVariaveisSaidaHIDROGRAMA, lerOperacaoHIDROGRAMA, escreverSaidaHIDROGRAMA, plotarHIDROGRAMA
-from OperacaoDERIVACAO import gerarVariaveisSaidaDERIVACAO, preparacaoDERIVACAO, calcularOperacaoDERIVACAO, escreverSaidaDERIVACAO, plotarDERIVACAO
-from Leitura import determinarDiretorios, lerArquivoEntrada, checarLogicaCircular
-from Leitura import determinarDiretoriosPlotagens, identificarCodigoArquivoSaida
-from Leitura import lerArquivoSaidaPQ, lerArquivoSaidaPULS, lerArquivoSaidaMKC, lerArquivoSaidaJUN, lerArquivoSaidaHIDRO, lerArquivoSaidaDERIVACAO
-from Utilidades import atualizarBarraProgresso, organizarIndices, corrigirCaracteres, criarPasta
+from lib.OperacaoPQ import gerarVariaveisSaidaPQ, calcularOperacaoPQ, escreverSaidaPQ, plotarPQ
+from lib.OperacaoPULS import gerarVariaveisSaidaPULS, preparacaoPULS, calcularOperacaoPULS, escreverSaidaPULS, plotarPULS
+from lib.OperacaoMKC import gerarVariaveisSaidaMKC, preparacaoMKC, calcularOperacaoMKC, escreverSaidaMKC, plotarMKC
+from lib.OperacaoJUNCAO import gerarVariaveisSaidaJUNCAO, preparacaoJUNCAO, calcularOperacaoJUNCAO, escreverSaidaJUNCAO, plotarJUN
+from lib.OperacaoHIDROGRAMA import gerarVariaveisSaidaHIDROGRAMA, lerOperacaoHIDROGRAMA, escreverSaidaHIDROGRAMA, plotarHIDROGRAMA
+from lib.OperacaoDERIVACAO import gerarVariaveisSaidaDERIVACAO, preparacaoDERIVACAO, calcularOperacaoDERIVACAO, escreverSaidaDERIVACAO, plotarDERIVACAO
+from lib.Leitura import determinarDiretorios, lerArquivoEntrada, checarLogicaCircular
+from lib.Leitura import determinarDiretoriosPlotagens, identificarCodigoArquivoSaida
+from lib.Leitura import lerArquivoSaidaPQ, lerArquivoSaidaPULS, lerArquivoSaidaMKC, lerArquivoSaidaJUN, lerArquivoSaidaHIDRO, lerArquivoSaidaDERIVACAO
+from lib.Utilidades import atualizarBarraProgresso, organizarIndices, corrigirCaracteres, criarPasta
 
 
 #----------------------------------------------------------------------
@@ -75,7 +75,7 @@ def iniciarProcessamento(isFolder, diretorio_do_software):
 def iniciarSimulacaoArquivo(diretorio_arquivo, diretorio_saida, nome_arquivo):
     """"""
     #   Pegar as variaveis de entrada... sao muitas, eu sei.... ¯\_(ツ)_/¯... eu abreveiei o maximo que pude..
-    nInt, DT, nCh, nIntCh, nOp, entrOp, cdgOH, nomesOp, idfA, idfB, idfC, idfD, limIDF, tpIDF, posPico, TR, dirCh, CN, area, TC, nChuPQ, difCota, compCanal, CCV, estruPULS, cotaIniPULS, byPasses, largCanal, nMann, dirHidro, tpDeriv, vlDeriv, sdDeriv = lerArquivoEntrada(diretorio_arquivo)
+    nInt, DT, nCh, nIntCh, nOp, entrOp, cdgOH, nomesOp, idfA, idfB, idfC, idfD, limIDF, tpIDF, posPico, TR, dirCh, CN, area, TC, nChuPQ, difCota, compCanal, CCV, estruPULS, cotaIniPULS, byPasses, largCanal, nMann, dirHidro, tpDeriv, vlDeriv, sdDeriv, prf = lerArquivoEntrada(diretorio_arquivo)
     
     #   Rodar a funcao de organiza a ordem de execucao, a variavel integridade nao e' usada para nada apenas evita bug
     integridade, ordem_execucao = checarLogicaCircular(entrOp)
@@ -115,8 +115,8 @@ def iniciarSimulacaoArquivo(diretorio_arquivo, diretorio_saida, nome_arquivo):
             #   Determinar indices
             indiceSaida = indSaiPQ.index(indOp) # Exclusivo para a variavel de saida; len(indSaiX) <= nOp
             indiceChuva = nChuPQ[indOp] # Por nChuPQ ter len == nOp, a determina do indice e' diferente
-            #   Calcular o hidrograma de saida 
-            hidSaiPQ[indiceSaida], chuEfePQ[indiceSaida] = calcularOperacaoPQ(nInt, DT, nIntCh, CN[indOp], area[indOp], TC[indOp], chuOrdPQ[indiceChuva])
+            #   Calcular o hidrograma de saida  !! PRECISA RECEBER PRF -> ser escrito no arquivo .hyd !!
+            hidSaiPQ[indiceSaida], chuEfePQ[indiceSaida] = calcularOperacaoPQ(nInt, DT, nIntCh, CN[indOp], area[indOp], TC[indOp], chuOrdPQ[indiceChuva], prf)
         
         #   Para Puls
         elif cdgOH[indOp] == 2:
@@ -195,7 +195,7 @@ def iniciarSimulacaoArquivo(diretorio_arquivo, diretorio_saida, nome_arquivo):
     #   Para derivacao
     if 6 in cdgOH:
         #   Gerar arquivo de saida...
-        escreverSaidaDERIVACAO(nInt, DT, nOp, cdgOH, entrOp, indSaiPQ, indSaiPULS, indSaiMKC, indSaiJUN, indSaiHIDRO, indSaiDERIVACAO, hidSaiPQ, hidSaiPULS, hidSaiMKC, hidSaiJUN, hidSaiHIDRO, hidSaiDERIVACAO, tpDeriv, vlDeriv, sdDeriv, diretorio_saida, nome_arquivo, nomesOp)
+        escreverSaidaDERIVACAO(nInt, DT, nOp, cdgOH, entrOp, indSaiPQ, indSaiPULS, indSaiMKC, indSaiJUN, indSaiHIDRO, indSaiDERIVACAO, hidSaiPQ, hidSaiPULS, hidSaiMKC, hidSaiJUN, hidSaiHIDRO, hidSaiDERIVACAO, tpDeriv, vlDeriv, sdDeriv, diretorio_saida, nome_arquivo, nomesOp, prf)
 #----------------------------------------------------------------------
 def iniciarGraficos(isFolder, diretorio_do_software, resolucao):
     """Funcao "controle". Gerencia leitura e inicia a plotagem dos graficos."""

@@ -5,12 +5,12 @@
 from os import path
 from numpy import array, float64, argmax
 #   Import das bibliotecas customizadas
-from Utilidades import atualizarBarraProgresso
-from Leitura import lerSerieObservada
-from Hydrolib import calcular_PrecipitacaoDesacumulada, aplicar_BlocosAlternados
-from Hydrolib import calcular_PrecipitacaoEfetiva_CN, calcular_HUT_SCS
-from Hydrolib import aplicar_Convolucao, plotar_Hidrogramas_PQ
-from Hydrolib import plotar_Hidrogramas_PQ
+from lib.Utilidades import atualizarBarraProgresso
+from lib.Leitura import lerSerieObservada
+from lib.Hydrolib import calcular_PrecipitacaoDesacumulada, aplicar_BlocosAlternados
+from lib.Hydrolib import calcular_PrecipitacaoEfetiva_CN, calcular_HUT_SCS
+from lib.Hydrolib import aplicar_Convolucao, plotar_Hidrogramas_PQ
+from lib.Hydrolib import plotar_Hidrogramas_PQ
 
 
 #----------------------------------------------------------------------
@@ -72,7 +72,7 @@ def calcularChuvasOrdenadas(numero_intervalos_tempo_chuva, duracao_intervalo_tem
     #   Retorne
     return precipitacao_sintetica
 #----------------------------------------------------------------------------------
-def calcularOperacaoPQ(numero_intervalos_tempo, duracao_intervalo_tempo, numero_intervalos_tempo_chuva, coeficiente_cn, area_km2, tc_horas, precipitacao_ordenada, prf=0.208):
+def calcularOperacaoPQ(numero_intervalos_tempo, duracao_intervalo_tempo, numero_intervalos_tempo_chuva, coeficiente_cn, area_km2, tc_horas, precipitacao_ordenada, prf):
     """Funcao para calcular as variaveis de saida de hidrograma"""
     #   Calcular a Precipitacao Efetiva
     precipitacao_efetiva = calcular_PrecipitacaoEfetiva_CN(coeficiente_cn, precipitacao_ordenada, numero_intervalos_tempo_chuva)
@@ -83,7 +83,7 @@ def calcularOperacaoPQ(numero_intervalos_tempo, duracao_intervalo_tempo, numero_
     #   Retorne
     return hidrograma_resultante, precipitacao_efetiva
 #---------------------------------------------------------------------------------- 
-def escreverSaidaPQ(numero_intervalos_tempo, duracao_intervalo_tempo, numero_intervalos_tempo_chuva, numero_operacoes_hidrologicas, codigo_operacoes_hidrologicas, coeficiente_cn, area_km2, tc_horas, chuvas_entrada_pq, precipitacoes_ordenadas, hidrogramas_saida_pq, precipitacoes_efetivas, diretorio_saida, nome_arquivo, nomes_operacoes):
+def escreverSaidaPQ(numero_intervalos_tempo, duracao_intervalo_tempo, numero_intervalos_tempo_chuva, numero_operacoes_hidrologicas, codigo_operacoes_hidrologicas, coeficiente_cn, area_km2, tc_horas, chuvas_entrada_pq, precipitacoes_ordenadas, hidrogramas_saida_pq, precipitacoes_efetivas, diretorio_saida, nome_arquivo, nomes_operacoes, prf):
     """Escreva o arquivo de saida para as operacoes de PQ"""
     #   Preparo arquivo de saida
     diretorio_saida = (diretorio_saida + "/Saida_PQ_".encode() + nome_arquivo + ".ohy".encode())
@@ -100,6 +100,7 @@ def escreverSaidaPQ(numero_intervalos_tempo, duracao_intervalo_tempo, numero_int
     arquivo_saida.write("Número de intervalos de tempo            = %d\u000A" %(numero_intervalos_tempo))
     arquivo_saida.write("Número de intervalos de tempo com chuva  = %d\u000A" %(numero_intervalos_tempo_chuva))
     arquivo_saida.write("Duração do intervalo de tempo (segundos) = %d\u000A" %(duracao_intervalo_tempo))
+    arquivo_saida.write("Fator de pico (Unidade ?)                = %d\u000A" %(prf))
     arquivo_saida.write("\u000A------------------------------------------------------------------------\u000A\u000A")
     
     arquivo_saida.write(" ---- INFORMAÇÕES DAS SIMULAÇÕES CHUVA-VAZÃO ---- \u000A")

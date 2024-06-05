@@ -41,7 +41,7 @@ if __name__ == '__main__':
     syspath.insert(1, diretorio_biblioteca.decode())
     
     #   Import(s) final(is)
-    from InterfacesGraficas import InterfacePrincipal
+    from lib.InterfacesGraficas import InterfacePrincipal
     
     print ("""
      ------------------ MODELO HIDROLOGICO ECOTECNOLOGIAS ----------------- 

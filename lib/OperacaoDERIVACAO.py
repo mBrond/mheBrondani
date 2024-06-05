@@ -5,10 +5,10 @@
 from os import path
 from numpy import array, float64, argmax
 #   Import das bibliotecas customizadas
-from Hydrolib import aplicar_Derivacao_Constante
-from Hydrolib import aplicar_Derivacao_Porcentagem
-from Hydrolib import aplicar_Derivacao_Hidrograma
-from Hydrolib import plotar_Hidrogramas_Derivacao
+from lib.Hydrolib import aplicar_Derivacao_Constante
+from lib.Hydrolib import aplicar_Derivacao_Porcentagem
+from lib.Hydrolib import aplicar_Derivacao_Hidrograma
+from lib.Hydrolib import plotar_Hidrogramas_Derivacao
 
 
 #----------------------------------------------------------------------
@@ -133,7 +133,7 @@ def calcularOperacaoDERIVACAO(numero_intervalos_tempo, hidrograma_entrada, tipo_
     #   Retornar hidrograma de saida
     return hidrograma_resultante
 #----------------------------------------------------------------------------------
-def escreverSaidaDERIVACAO(numero_intervalos_tempo, duracao_intervalo_tempo, numero_operacoes_hidrologicas, codigo_operacoes_hidrologicas, entradas_operacoes, indices_pq, indices_puls, indices_mkc, indices_jun, indices_hidro, indices_derivacao, hidrogramas_saida_pq, hidrogramas_saida_puls, hidrogramas_saida_mkc, hidrogramas_saida_jun, hidrogramas_saida_hidro, hidrogramas_saida_derivacao, tipo_derivacao, valor_derivacao, saida_derivacao, diretorio_saida, nome_arquivo, nomes_operacoes):
+def escreverSaidaDERIVACAO(numero_intervalos_tempo, duracao_intervalo_tempo, numero_operacoes_hidrologicas, codigo_operacoes_hidrologicas, entradas_operacoes, indices_pq, indices_puls, indices_mkc, indices_jun, indices_hidro, indices_derivacao, hidrogramas_saida_pq, hidrogramas_saida_puls, hidrogramas_saida_mkc, hidrogramas_saida_jun, hidrogramas_saida_hidro, hidrogramas_saida_derivacao, tipo_derivacao, valor_derivacao, saida_derivacao, diretorio_saida, nome_arquivo, nomes_operacoes, prf):
     """Escreva o arquivo de saida para as operacoes de derivacao"""
     #   Preparo arquivo de saida
     diretorio_saida = (diretorio_saida + "/Saida_DERIVACAO_".encode() + nome_arquivo + ".ohy".encode())
@@ -149,6 +149,7 @@ def escreverSaidaDERIVACAO(numero_intervalos_tempo, duracao_intervalo_tempo, num
     arquivo_saida.write("Número de operações de derivação         = %d\u000A" %(len(hidrogramas_saida_derivacao)))
     arquivo_saida.write("Número de intervalos de tempo            = %d\u000A" %(numero_intervalos_tempo))
     arquivo_saida.write("Duração do intervalo de tempo (segundos) = %d\u000A" %(duracao_intervalo_tempo))
+    arquivo_saida.write("Fator de pico                            = %d\u000A" %(prf))
     arquivo_saida.write("\u000A------------------------------------------------------------------------\u000A\u000A")
     
     arquivo_saida.write(" ---- INFORMAÇÕES DAS DERIVAÇÕES ---- \u000A\u000A")

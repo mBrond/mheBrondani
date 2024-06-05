@@ -11,17 +11,17 @@ from numpy import array, float64
 from tkinter import Tk
 from tkinter import filedialog
 #   Import das bibliotecas customizadas
-from Hydrolib import calcular_TC_Kirpich
-from Utilidades import atualizarBarraProgresso, contarLinhas, mensagensSelecaoArquivos
-from Utilidades import mensagensIntegridadeArquivos,  mensagensIntegridadeInfoGerais
-from Utilidades import mensagensIntegridadeChuvas,    mensagensIntegridadePQ
-from Utilidades import mensagensIntegridadePULS,      mensagensIntegridadeMKC
-from Utilidades import mensagensIntegridadeJUN,       mensagensIntegridadeHIDRO
-from Utilidades import mensagensIntegridadeDERIVACAO, mensagensIntegridadeArquivosObservados
-from Utilidades import mensagensIntegridadePlotagens
-from Utilidades import mensagensIntegridadePlotagensPQ,    mensagensIntegridadePlotagensPULS
-from Utilidades import mensagensIntegridadePlotagensMKC,   mensagensIntegridadePlotagensJUN
-from Utilidades import mensagensIntegridadePlotagensHIDRO, mensagensIntegridadePlotagensDERIVACAO
+from lib.Hydrolib import calcular_TC_Kirpich
+from lib.Utilidades import atualizarBarraProgresso, contarLinhas, mensagensSelecaoArquivos
+from lib.Utilidades import mensagensIntegridadeArquivos,  mensagensIntegridadeInfoGerais
+from lib.Utilidades import mensagensIntegridadeChuvas,    mensagensIntegridadePQ
+from lib.Utilidades import mensagensIntegridadePULS,      mensagensIntegridadeMKC
+from lib.Utilidades import mensagensIntegridadeJUN,       mensagensIntegridadeHIDRO
+from lib.Utilidades import mensagensIntegridadeDERIVACAO, mensagensIntegridadeArquivosObservados
+from lib.Utilidades import mensagensIntegridadePlotagens
+from lib.Utilidades import mensagensIntegridadePlotagensPQ,    mensagensIntegridadePlotagensPULS
+from lib.Utilidades import mensagensIntegridadePlotagensMKC,   mensagensIntegridadePlotagensJUN
+from lib.Utilidades import mensagensIntegridadePlotagensHIDRO, mensagensIntegridadePlotagensDERIVACAO
 
 
 #----------------------------------------------------------------------
@@ -237,6 +237,7 @@ def checarIntegridadeEntrada(diretorio_arquivo_entrada):
     numero_estruturas_puls = 0
     nch_declaradas = 0
     nop_declaradas = 0
+    prf = 0
     integridade_entrada = True # Comeco dizendo que e' belezinha, mas no final da funcao eu avalio melhor
     
     #   Abrir arquivo de entrada
@@ -261,7 +262,7 @@ def checarIntegridadeEntrada(diretorio_arquivo_entrada):
             arquivo_entrada.close(); mensagensIntegridadeArquivos(1, linhas_lidas, nch, nop, nch_declaradas, nop_declaradas, ""); return False, None
     
     #   Testar tamanho da linha
-    if not len(conteudo_linha) == 7:
+    if not len(conteudo_linha) == 8:
         #   Avise o usuario
         arquivo_entrada.close(); mensagensIntegridadeInfoGerais(1, linhas_lidas); return False, None
     
@@ -295,7 +296,10 @@ def checarIntegridadeEntrada(diretorio_arquivo_entrada):
     #   Essa variavel e' feita duas vezes. Faz-se aqui pois precisamos dela pra avaliar unicidade e logica circular.
     #   Ela nao e' carregada adiante apenas pra deixar o code mais limpo
     entrada_operacoes = [0 for ii in range(nop_declaradas)] 
-    
+
+    # Variavel PRF adicionada posteriormente à versão original do programa.
+    prf = float(conteudo_linha[6])
+
     #   Nao pode ser zero
     if int(conteudo_linha[1]) == 0:
         arquivo_entrada.close(); mensagensIntegridadeInfoGerais(8, linhas_lidas); return False, None
@@ -305,6 +309,8 @@ def checarIntegridadeEntrada(diretorio_arquivo_entrada):
         arquivo_entrada.close(); mensagensIntegridadeInfoGerais(10, linhas_lidas); return False, None
     if int(conteudo_linha[5]) == 0:
         arquivo_entrada.close(); mensagensIntegridadeInfoGerais(11, linhas_lidas); return False, None
+    if(float(conteudo_linha[6])) == 0:
+        arquivo_entrada.close(); mensagensIntegridadeInfoGerais(12, linhas_lidas); return False, None
         
     #   Ver quantos blocos de leitura
     nblocos = int(conteudo_linha[3]) + int(conteudo_linha[5])
@@ -1244,6 +1250,7 @@ def lerArquivoEntrada(diretorio_arquivo_entrada):
         numero_chuvas                 = int(conteudo_linha[3]) # (nCh)
         numero_intervalos_tempo_chuva = int(conteudo_linha[4]) # (nIntCh)
         numero_operacoes              = int(conteudo_linha[5]) # (nop)
+        prf                           = float(conteudo_linha[6])
         
         #   Variaveis da logica do programa - controlam os processos e a maneira como o programa vai resolver as operacoes hidrologicas
         entradas_operacoes = [None for ii in range(numero_operacoes)] # (entrOp) 0: nao precisa de outra operacao; >0: representa o numero da op de entrada dessa operacao
@@ -1602,7 +1609,7 @@ def lerArquivoEntrada(diretorio_arquivo_entrada):
         atualizarBarraProgresso(ii+1, numero_blocos)
         
     #   Fazer o retorno das variaveis
-    return numero_intervalos_tempo, duracao_intervalo_tempo, numero_chuvas, numero_intervalos_tempo_chuva, numero_operacoes, entradas_operacoes, codigos_operacoes, nomes_operacoes, parametro_a, parametro_b, parametro_c, parametro_d, limites_idf, tipo_idf, posicao_pico, tempo_retorno, diretorios_chuvas_observadas, coeficiente_cn, area_km2, tc_horas, chuvas_entrada_pq, diferenca_cota_m, comprimento_canal_km, curvas_cota_volume, estruturas_puls, cotas_iniciais_puls_m, vazoes_by_pass_m3s, largura_canal_m, coeficiente_rugosidade, diretorios_hidrogramas_observados, tipo_derivacao, valor_derivacao, saida_derivacao
+    return numero_intervalos_tempo, duracao_intervalo_tempo, numero_chuvas, numero_intervalos_tempo_chuva, numero_operacoes, entradas_operacoes, codigos_operacoes, nomes_operacoes, parametro_a, parametro_b, parametro_c, parametro_d, limites_idf, tipo_idf, posicao_pico, tempo_retorno, diretorios_chuvas_observadas, coeficiente_cn, area_km2, tc_horas, chuvas_entrada_pq, diferenca_cota_m, comprimento_canal_km, curvas_cota_volume, estruturas_puls, cotas_iniciais_puls_m, vazoes_by_pass_m3s, largura_canal_m, coeficiente_rugosidade, diretorios_hidrogramas_observados, tipo_derivacao, valor_derivacao, saida_derivacao, prf
 #----------------------------------------------------------------------
 def determinarDiretoriosPlotagens(isFolder, diretorio_do_software):
     """Retornar [diretorios_arquivos_entrada] e [diretorio_saida], ambos com len >= 1 e encoded"""

@@ -5,9 +5,9 @@
 from os import path
 from numpy import array, float64
 #   Import das bibliotecas customizadas
-from Leitura import lerSerieObservada
-from Hydrolib import calcular_VazaoSaida_Puls, aplicar_Puls
-from Hydrolib import plotar_Hidrogramas_PULS
+from lib.Leitura import lerSerieObservada
+from lib.Hydrolib import calcular_VazaoSaida_Puls, aplicar_Puls
+from lib.Hydrolib import plotar_Hidrogramas_PULS
 
 
 #----------------------------------------------------------------------
