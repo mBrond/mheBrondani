@@ -33,7 +33,7 @@ from tkinter import *
 
 #-----------------------------------------------------------------------
 if __name__ == '__main__':
-    versao_do_software = round(220706/200000,2) # AAMMDD/200000
+    versao_do_software = round(240710/200000,2) # AAMMDD/200000
     #   Pegar o diretorio do software
     diretorio_do_software = path.dirname(path.abspath(argv[0])).encode()
     diretorio_biblioteca = diretorio_do_software + "/lib".encode()
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     |- Lucas Camargo da Silva Tassinari - lucascstassinari@gmail.com       |
     |- Daniel Gustavo Allasia P. - dallasia@gmail.com                      |
     |- Rutineia Tassi - rutineia@gmail.com                                 |
-    |                                                                      |
+    |- Miguel Brondani - brondani.miguel@gmail.com                         |
     |VERSAO: %5.2f                                                         |
     |------------------------- INSTRUCOES DE USO --------------------------|
     |                                                                      |

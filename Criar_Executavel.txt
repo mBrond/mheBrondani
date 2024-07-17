@@ -1,0 +1,8 @@
+Passo a passo de como o executável foi criado:
+1. Instalar biblioteca PyInstaller
+2. Abrir terminal do PyCharm no diretorio do arquivo Modelo_Hidrologico_Ecotecnologias
+3. Rodar o codigo: python -m PyInstaller .\Modelo_Hidrologico_Ecotecnologias.py --onefile
+
+Observações:
+- Imagens não são compiladas junto do programa, try-exceptions são necessárias em tais partes do código.
+- Conferir se antivirus ou windows defender não estão bloqueando o código.
