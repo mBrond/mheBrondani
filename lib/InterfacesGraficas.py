@@ -36,7 +36,7 @@ class InterfacePrincipal(Toplevel):
         
         #   Mudar todos os icones
         try: #adicionado try para o arquivo executavél funcionar
-            icone = ImageTk.PhotoImage(Image.open(".\\lib\\icone.png".encode()))
+            icone = ImageTk.PhotoImage(Image.open(".\\images\\icone.png".encode()))
             self.master.wm_iconphoto(True, icone)
         except:
             pass
@@ -85,7 +85,7 @@ class InterfacePrincipal(Toplevel):
     
         #    Bi de ibaaaagens cobandante habilton!
         try: #adicionado try para o arquivo executavél funcionar
-            imagemLogo = ImageTk.PhotoImage(Image.open(".\\lib\\Logo.png".encode()))
+            imagemLogo = ImageTk.PhotoImage(Image.open(".\\images\\Logo.png".encode()))
             imagemLabel = Label(primeiroFrame, image=imagemLogo, bg="#DFF9CA")
             imagemLabel.grid(row = 1, column = 0, columnspan = 4, pady = 0, padx = 0)
             imagemLabel.image = imagemLogo
@@ -162,7 +162,7 @@ class InterfaceAuxiliar(Toplevel):
         
         #   Mudar todos os icones
         try: #adicionado try para o arquivo executavél funcionar
-            icone = ImageTk.PhotoImage(Image.open(self.diretorio_do_software + "//lib//icone.png".encode()))
+            icone = ImageTk.PhotoImage(Image.open(self.diretorio_do_software + "//images//icone.png".encode()))
             self.master.wm_iconphoto(True, icone)
         except:
             pass
@@ -2204,7 +2204,7 @@ class InterfacePlotagens(Toplevel):
         
         #   Mudar todos os icones
         try: #adicionado try para o arquivo executavél funcionar
-            icone = ImageTk.PhotoImage(Image.open(".\\lib\\icone.png".encode()))
+            icone = ImageTk.PhotoImage(Image.open(".\\images\\icone.png".encode()))
             self.master.wm_iconphoto(True, icone)
         except:
             pass
@@ -2333,7 +2333,7 @@ class InterfaceSobre(Toplevel):
         
         #   Mudar todos os icones
         try: #adicionado try para o arquivo executavél funcionar
-            icone = ImageTk.PhotoImage(Image.open(".\\lib\\icone.png".encode()))
+            icone = ImageTk.PhotoImage(Image.open(".\\images\\icone.png".encode()))
             self.master.wm_iconphoto(True, icone)
         except:
             pass
