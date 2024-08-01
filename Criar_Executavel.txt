@@ -6,3 +6,6 @@ Passo a passo de como o executável foi criado:
 Observações:
 - Imagens não são compiladas junto do programa, try-exceptions são necessárias em tais partes do código.
 - Conferir se antivirus ou windows defender não estão bloqueando o código.
+
+Para Imagens:
+add diretório "images" com os arquivos no mesmo diretório do executável.
